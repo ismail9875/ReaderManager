@@ -1,4 +1,4 @@
-ReaderManager — إضافة إدارة قارئات OSCam و NCam لأجهزة Enigma2
+ReaderManager — OSCam & NCam Reader Management Plugin for Enigma2
 
 <p align="center">
   <img src="https://img.shields.io/badge/Enigma2-Plugin-blue" alt="Enigma2 Plugin">
@@ -9,67 +9,67 @@ ReaderManager — إضافة إدارة قارئات OSCam و NCam لأجهزة 
 
 ---
 
-📖 نظرة عامة
+📖 Overview
 
-ReaderManager هي إضافة متكاملة لأجهزة Enigma2 تُتيح لك إدارة قارئات OSCam و NCam مباشرة من واجهة رسومية أنيقة، دون الحاجة للتعامل مع الملفات النصية أو سطر الأوامر.
+ReaderManager is a complete plugin for Enigma2 devices that lets you manage OSCam and NCam readers directly from a modern graphical interface — no more editing config files by hand or typing commands in a terminal.
 
-تجمع الإضافة بين:
+It combines:
 
-· إدارة القراء (Readers) عبر WebIF الخاص بـ OSCam/NCam
-· إدارة المحاكيات (Emulators) المثبتة على /usr/bin
-· تحرير ملفات الإعدادات (oscam.server / ncam.server) بواجهة مبسّطة
-· عرض تفاصيل البطاقات والـ CAIDs والـ Providers
+· Reader management via the OSCam / NCam WebIF
+· Emulator management from /usr/bin
+· Config file editing (oscam.server / ncam.server) with a simplified UI
+· Card / CAID / Provider details viewer
 
-كل ذلك عبر واجهة عصرية بتصميم داكن مريح للعين، ومناسبة لأجهزة الريموت كنترول.
-
----
-
-✨ الخصائص الرئيسية
-
-🎛️ إدارة القراء (Readers Manager)
-
-الخصائص الوصف
-عرض جدول القراء Label / Host / Port / ON-OFF / Protocol / Cards / Status في جدول واحد
-التبديل السريع زر OK لتبديل حالة القارئ (ON ↔ OFF)
-إضافة قارئ جديد زر Green لفتح نموذج إضافة قارئ كامل
-حذف قارئ زر Yellow لحذف القارئ المحدد
-تحرير قارئ زر Blue لتعديل إعدادات القارئ الحالي
-التنقل الدائري عند الوقوف على أول/آخر قارئ، السكرول يعود للطرف الآخر تلقائياً
-التبديل بين OSCam/NCam أسهم يمين/يسار للتبديل بين الملفين
-عرض تفاصيل القارئ زر Info لفتح شاشة تفاصيل شاملة
-
-🔧 إدارة المحاكيات (Emulator Manager)
-
-الخصائص الوصف
-اكتشاف تلقائي مسح /usr/bin لاكتشاف كل المحاكيات (OSCam / NCam)
-استخراج النسخة من اسم الملف أو تنفيذ -V أو من ملفات /tmp
-إيجاد سكربت init يبحث في /etc/init.d/softcam.<name>-<version> تلقائياً
-التحكم الفردي Start/Stop لكل محاكٍ على حدة
-إعادة التشغيل زر Restart للمحاكي المحدد فقط
-محاكي واحد نشط عند تشغيل محاكٍ، تُوقَف كل المحاكيات الأخرى تلقائياً
-عرض الحالة RUNNING / STOPPED لكل محاكٍ
-
-📝 محرر القراء (Reader Editor)
-
-· وضعان: Simple (حقول أساسية) و Advanced (كل الحقول)
-· إخفاء تلقائي للكلمات السرية والمفاتيح (*****)
-· مساعدة لكل حقل عند الضغط على Info
-· تحقق فوري من صحة البيانات قبل الحفظ
-· دعم كل البروتوكولات: cccam, newcamd, mgcamd, cs378x, camd35, gbox, radegast, mouse, smartreader, pcsc, internal, constcw, cacheex, emu
-
-🎬 شاشة تفاصيل القارئ (Reader View)
-
-· عرض كل الـ CAIDs مقسّمة حسب النظام (Viaccess, Irdeto, Conax...)
-· عرض Providers لكل CAID مع عدد البطاقات
-· ألوان مميزة لكل نظام تشفير
-· تنقل بين الأعمدة والصفوف عبر الأسهم
-· أزرار سريعة: Close / ON-OFF / Edit / Delete
+All wrapped in a sleek dark interface designed for remote control navigation.
 
 ---
 
-📸 لقطات الشاشة
+✨ Key Features
 
-شاشة ReaderManager الرئيسية
+🎛️ Readers Manager
+
+Feature Description
+Reader table Label / Host / Port / ON-OFF / Protocol / Cards / Status in one view
+Quick toggle Press OK to switch a reader between ON ↔ OFF
+Add reader Green button opens a full reader creation form
+Delete reader Yellow button removes the selected reader
+Edit reader Blue button modifies the current reader
+Circular scroll At the first/last reader, Up/Down wraps around
+OSCam / NCam switch Left / Right arrows switch between the two files
+Reader details Info button opens a full card/CAID view
+
+🔧 Emulator Manager
+
+Feature Description
+Auto-discovery Scans /usr/bin for all OSCam / NCam binaries
+Version detection From filename, -V execution, or /tmp version files
+Init script lookup Automatically finds /etc/init.d/softcam.<name>-<version>
+Individual control Start / Stop each emulator independently
+Restart Dedicated restart button for the selected emulator only
+Mutual exclusion Starting one emulator stops all others automatically
+State display RUNNING / STOPPED for each emulator
+
+📝 Reader Editor
+
+· Two modes: Simple (basic fields) and Advanced (all fields)
+· Automatic masking for Password / DES Key / AES Key / PIN
+· Per-field help on Info press
+· Instant validation before saving
+· Full protocol support: cccam, newcamd, mgcamd, cs378x, camd35, gbox, radegast, mouse, smartreader, pcsc, internal, constcw, cacheex, emu
+
+🎬 Reader View
+
+· Displays all CAIDs grouped by encryption system (Viaccess, Irdeto, Conax, …)
+· Shows Providers per CAID with card counts
+· Distinct color per encryption system
+· Column / row navigation with arrows
+· Quick actions: Close / ON-OFF / Edit / Delete
+
+---
+
+📸 Screenshots
+
+ReaderManager Main Screen
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -85,7 +85,7 @@ ReaderManager هي إضافة متكاملة لأجهزة Enigma2 تُتيح ل�
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-شاشة Emulator Manager
+Emulator Manager Screen
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -103,265 +103,267 @@ ReaderManager هي إضافة متكاملة لأجهزة Enigma2 تُتيح ل�
 
 ---
 
-🚀 التثبيت
+🚀 Installation
 
-الطريقة الأولى: أمر واحد (موصى بها)
+Method 1: One-liner (recommended)
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/ismail9875/ReaderManager/main/install.sh | sh
 ```
 
-الطريقة الثانية: يدوياً
+Method 2: Manual
 
 ```bash
-# 1. تنزيل الأرشيف
+# 1. Download archive
 cd /tmp
 wget --no-check-certificate -O ReaderManager.tar.gz \
   "https://github.com/ismail9875/ReaderManager/raw/refs/heads/main/ReaderManager.tar.gz"
 
-# 2. الاستخراج
+# 2. Extract
 tar -xzf ReaderManager.tar.gz -C /tmp/
 
-# 3. النسخ إلى مسار الإضافات
+# 3. Copy to plugins directory
 mkdir -p /usr/lib/enigma2/python/Plugins/Extensions/OscamReaderManager
 cp -a /tmp/OscamReaderManager/* \
       /usr/lib/enigma2/python/Plugins/Extensions/OscamReaderManager/
 
-# 4. الصلاحيات
+# 4. Set permissions
 chmod -R 755 /usr/lib/enigma2/python/Plugins/Extensions/OscamReaderManager
 
-# 5. إعادة تشغيل Enigma2
+# 5. Restart Enigma2
 init 4 && init 3
 ```
 
-الطريقة الثالثة: عبر سكريبت التثبيت الآلي
+Method 3: Automated install script
 
-نزّل ملف install_reader_manager.sh من المستودع وشغّله:
+Download install_reader_manager.sh from the repo and run:
 
 ```bash
 sh /tmp/install_reader_manager.sh
 ```
 
+The script auto-detects full-path archives, handles backups, and falls back to init 4 && init 3 if systemd fails.
+
 ---
 
-🎮 طريقة الاستخدام
+🎮 Usage
 
-فتح الإضافة
+Opening the plugin
 
 Main Menu → Plugins → Readers Manager
 
-أو:
+or:
 
 Main Menu → Extensions → Readers Manager Settings
 
-جدول الأزرار (ReaderManager)
+ReaderManager key map
 
-الزر الوظيفة
-OK تبديل حالة القارئ (ON ↔ OFF) + إعادة تشغيل SoftCam
-Red خروج
-Green إضافة قارئ جديد
-Yellow حذف القارئ المحدد
-Blue تحرير القارئ المحدد
-Menu فتح قائمة الإعدادات
-Info عرض تفاصيل القارئ (CAIDs / Providers)
-EPG عرض سجل التصحيح (Debug Log)
-Left / Right التبديل بين OSCam / NCam
-Up / Down التنقل بين القراء (مع سكرول دائري)
+Key Action
+OK Toggle reader state (ON ↔ OFF) + restart SoftCam
+Red Exit
+Green Add new reader
+Yellow Delete selected reader
+Blue Edit selected reader
+Menu Open settings menu
+Info View reader details (CAIDs / Providers)
+EPG Open debug log
+Left / Right Switch between OSCam / NCam
+Up / Down Navigate readers (with circular scroll)
 
-جدول الأزرار (Emulator Manager)
+Emulator Manager key map
 
-الزر الوظيفة
-OK / Green Start / Stop للمحاكي المحدد
-Blue إعادة تشغيل المحاكي المحدد
-Yellow إعادة مسح /usr/bin
-Red خروج
-Up / Down التنقل بين المحاكيات (سكرول دائري)
+Key Action
+OK / Green Start / Stop the selected emulator
+Blue Restart the selected emulator
+Yellow Re-scan /usr/bin
+Red Exit
+Up / Down Navigate emulators (circular scroll)
 
 ---
 
-⚙️ الإعدادات
+⚙️ Settings
 
 General Settings
 
-الإعداد الخيارات
-Poll Interval 3 - 120 ثانية
-Sort readers أبجدي / ترتيب الملف
+Option Values
+Poll Interval 3 – 120 seconds
+Sort readers Alphabetical / File order
 Editor Mode Simple / Advanced
-Auto restart after changes نعم / لا
-Restart delay فوري / 1s / 3s / 5s / 10s
-Confirm before restart نعم / لا
+Auto restart after changes Yes / No
+Restart delay Immediate / 1s / 3s / 5s / 10s
+Confirm before restart Yes / No
 
 OSCam WebIF Settings
 
-الإعداد الوصف
-Enable تفعيل/تعطيل OSCam API
-Auto-detect كشف تلقائي من oscam.version
-WebIF URL مثل http://127.0.0.1:8888
-Username / Password بيانات الدخول
-Timeout 1 - 30 ثانية
+Option Description
+Enable Enable/disable OSCam API
+Auto-detect Detect from oscam.version
+WebIF URL e.g. http://127.0.0.1:8888
+Username / Password Login credentials
+Timeout 1 – 30 seconds
 
 NCam WebIF Settings
 
-نفس الخيارات مع عنوان افتراضي http://127.0.0.1:8181.
+Same options with default URL http://127.0.0.1:8181.
 
 ---
 
-🌍 البروتوكولات المدعومة
+🌍 Supported Protocols
 
-البروتوكول الوصف
-cccam شبكة CCcam
-newcamd Newcamd مع DES key
-mgcamd MgCamd (NCam فقط)
+Protocol Description
+cccam CCcam network
+newcamd Newcamd with DES key
+mgcamd MgCamd (NCam only)
 cs378x Cache-Exchange TCP
 camd35 Camd 3.5
 gbox GBox
 radegast Radegast
-mouse قارئ بطاقات تسلسلي/USB
+mouse Serial / USB card reader
 smartreader Smargo / SmartReader
 pcsc PC/SC reader
-internal قارئ داخلي (DreamBox)
-constcw ملف CW ثابت
+internal Internal reader (DreamBox)
+constcw Constant CW file
 cacheex Cache-Exchange
-emu محاكي (SoftCam.Key)
+emu Emulator (SoftCam.Key)
 
 ---
 
-🔒 الأمان
+🔒 Security
 
-· إخفاء تلقائي لـ Password / DES Key / AES Key / PIN
-· نسخ احتياطية تلقائية (.bak) قبل كل كتابة
-· كتابة ذرّية (atomic write) لمنع تلف الملفات
-· تحقق مزدوج بعد الكتابة (يقرأ الملف مرة أخرى للتأكد)
-· لا يُرسل أي بيانات لجهات خارجية
+· Automatic masking of Password / DES Key / AES Key / PIN
+· Automatic backups (.bak) before every write
+· Atomic writes to prevent file corruption
+· Double verification after writing (re-reads the file to confirm)
+· No data is sent to external servers
 
 ---
 
-🗂️ بنية الملفات
+🗂️ File Structure
 
 ```
 /usr/lib/enigma2/python/Plugins/Extensions/OscamReaderManager/
 ├── __init__.py
-├── plugin.py              ← نقطة الدخول الرئيسية
-├── reader_parser.py       ← تحليل/كتابة ملفات .server
-├── reader_dialog.py       ← محرر القارئ
-├── reader_view.py         ← شاشة تفاصيل القارئ
-├── oscamapi.py            ← عميل OSCam WebIF
-├── ncamapi.py             ← عميل NCam WebIF
-├── emu_manager.py         ← إدارة المحاكيات من /usr/bin
-├── test_queue.py          ← طابور اختبار القراء
-├── restart_oscam.py       ← إعادة تشغيل OSCam
-├── restart_ncam.py        ← إعادة تشغيل NCam
-├── field_help.py          ← قاعدة بيانات مساعدة الحقول
-├── logger.py              ← التسجيل
-├── paths.py               ← إدارة المسارات
+├── plugin.py              ← Main entry point
+├── reader_parser.py       ← .server file parser/writer
+├── reader_dialog.py       ← Reader editor
+├── reader_view.py         ← Reader details screen
+├── oscamapi.py            ← OSCam WebIF client
+├── ncamapi.py             ← NCam WebIF client
+├── emu_manager.py         ← Emulator manager (from /usr/bin)
+├── test_queue.py          ← Reader test queue
+├── restart_oscam.py       ← OSCam restart helper
+├── restart_ncam.py        ← NCam restart helper
+├── field_help.py          ← Per-field help database
+├── logger.py              ← Logging
+├── paths.py               ← Path management
 ├── images/
 │   ├── oscam.png
 │   ├── ncam.png
 │   └── plugin.png
 └── cache/
-    └── restart_methods.json  ← الطرق الناجحة لإعادة التشغيل
+    └── restart_methods.json  ← Successful restart method cache
 ```
 
 ---
 
-🛠️ المتطلبات
+🛠️ Requirements
 
-المتطلب النسخة
-Enigma2 أي إصدار حديث
-Python 2.7 أو 3.x
-OSCam أو NCam أي إصدار حديث
-مساحة ~2 MB
-نظام DreamOS، OpenATV، OpenPLi، OpenVision، BlackHole، ...
+Requirement Version
+Enigma2 Any recent build
+Python 2.7 or 3.x
+OSCam or NCam Any recent version
+Disk space ~2 MB
+Image DreamOS, OpenATV, OpenPLi, OpenVision, BlackHole, …
 
 ---
 
-🐛 حل المشاكل
+🐛 Troubleshooting
 
-الإضافة لا تظهر في القائمة
+Plugin doesn't appear in the menu
 
 ```bash
 init 4 && init 3
 ```
 
-OSCam WebIF لا يستجيب
+OSCam WebIF not responding
 
-1. افتح Settings → OSCam WebIF Settings
-2. اضغط Yellow لاختبار الاتصال
-3. تحقق من:
-   · عنوان WebIF (http://127.0.0.1:8888)
-   · اسم المستخدم وكلمة المرور
-   · أن WebIF مفعّل في oscam.conf
+1. Open Settings → OSCam WebIF Settings
+2. Press Yellow to test the connection
+3. Verify:
+   · WebIF URL (http://127.0.0.1:8888)
+   · Username and password
+   · WebIF is enabled in oscam.conf
 
-المحاكي لا يُكتشف
+Emulator not detected
 
 ```bash
-# تحقق من وجود الملفات الثنائية
+# Check binaries exist
 ls -la /usr/bin/oscam* /usr/bin/ncam*
 
-# تحقق من سكربتات init
+# Check init scripts
 ls -la /etc/init.d/softcam.*
 ```
 
-فشل إعادة التشغيل التلقائي
+Auto-restart failed
 
-افتح شاشة Debug Log لرؤية تفاصيل المحاولات. الطريقة الناجحة تُحفظ في cache/restart_methods.json.
-
----
-
-📊 سجل التغييرات
-
-v1.0 (الإصدار الحالي)
-
-· ✅ إدارة قارئات OSCam و NCam
-· ✅ إدارة محاكيات من /usr/bin
-· ✅ استبعاد متبادل (محاكي واحد نشط)
-· ✅ محرر قارئ مع Simple/Advanced
-· ✅ شاشة تفاصيل القارئ مع CAIDs و Providers
-· ✅ إعادة تشغيل ذكية بأربع طرق
-· ✅ إخفاء البيانات الحساسة
-· ✅ نسخ احتياطية تلقائية
-· ✅ سكرول دائري في القوائم
+Open the Debug Log screen to view attempt details. The successful method is cached in cache/restart_methods.json.
 
 ---
 
-🤝 المساهمة
+📊 Changelog
 
-المساهمات مرحّب بها! يمكنك:
+v1.0 (current)
 
-1. عمل Fork للمستودع
-2. إنشاء فرع جديد: git checkout -b feature/my-feature
-3. الالتزام بالتغييرات: git commit -am 'Add new feature'
-4. رفع الفرع: git push origin feature/my-feature
-5. فتح Pull Request
-
-معايير الكود
-
-· توافق Python 2.7 / 3.x
-· استخدام from __future__ import في كل ملف
-· لا تعتمد على مكتبات خارجية (كل شيء من Enigma2)
-· التعليقات بالعربية أو الإنجليزية
-· اختبار على جهاز حقيقي قبل الـ PR
+· ✅ OSCam and NCam reader management
+· ✅ Emulator management from /usr/bin
+· ✅ Mutual exclusion (only one emulator active)
+· ✅ Reader editor with Simple/Advanced modes
+· ✅ Reader view with CAIDs and Providers
+· ✅ Smart restart with 4 fallback methods
+· ✅ Automatic masking of sensitive data
+· ✅ Automatic backups
+· ✅ Circular scrolling in all lists
 
 ---
 
-📄 الترخيص
+🤝 Contributing
 
-هذا المشروع مرخّص تحت GPL-3.0 — راجع ملف LICENSE للتفاصيل.
+Contributions are welcome! You can:
+
+1. Fork the repository
+2. Create a feature branch: git checkout -b feature/my-feature
+3. Commit your changes: git commit -am 'Add new feature'
+4. Push to the branch: git push origin feature/my-feature
+5. Open a Pull Request
+
+Code standards
+
+· Python 2.7 / 3.x compatibility
+· Use from __future__ import in every file
+· No external dependencies (only Enigma2 built-ins)
+· Comments in English or Arabic
+· Test on a real device before opening a PR
 
 ---
 
-🙏 شكر خاص
+📄 License
 
-· فريق OSCam على البروتوكول الرائع
-· فريق NCam على الدعم المستمر
-· مجتمع Enigma2 على الأدوات والمساعدات
-· كل من ساهم في اختبار الإضافة
+This project is licensed under GPL-3.0 — see the LICENSE file for details.
 
 ---
 
-📞 التواصل
+🙏 Credits
 
-القناة الرابط
+· OSCam team for the great protocol
+· NCam team for continuous support
+· Enigma2 community for tools and help
+· Everyone who tested the plugin
+
+---
+
+📞 Contact
+
+Channel Link
 GitHub ismail9875/ReaderManager
 Issues Report a bug
 Discussions Ask questions
@@ -369,6 +371,6 @@ Discussions Ask questions
 ---
 
 <p align="center">
-  <b>ReaderManager</b> — إدارة احترافية لقارئات OSCam و NCam على Enigma2<br>
-  <i>صُنع بـ ❤️ لمجتمع Enigma2 العربي</i>
+  <b>ReaderManager</b> — Professional OSCam & NCam reader management for Enigma2<br>
+  <i>Made with ❤️ for the Enigma2 community</i>
 </p>
