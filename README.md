@@ -108,9 +108,9 @@ Emulator Manager Screen
 Method 1: One-liner (recommended)
 
 ```bash
-wget -qO- https://raw.githubusercontent.com/ismail9875/ReaderManager/main/install.sh | sh
-```
+wget -qO- https://raw.githubusercontent.com/ismail9875/ReaderManager/main/installer.sh | /bin/sh
 
+```
 Method 2: Manual
 
 ```bash
