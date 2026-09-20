@@ -7,6 +7,7 @@
 # Features:
 #   - Detects the correct Enigma2 restart method ONCE at startup
 #   - Uses it directly instead of trying all methods sequentially
+#   - Removes any existing ReaderManager from plugins path before install
 #   - Handles archives that preserve full paths
 #   - Automatic backup & restore on failure
 # =====================================================================
@@ -51,7 +52,6 @@ detect_restart_method() {
 
     # ─── Priority 1: systemd ───
     if command -v systemctl >/dev/null 2>&1; then
-        # Check if enigma2 is a known systemd unit
         if systemctl list-unit-files 2>/dev/null | \
              grep -q "^enigma2\."; then
             RESTART_METHOD="systemd"
@@ -64,7 +64,6 @@ detect_restart_method() {
 
     # ─── Priority 2: init (Enigma2 classic) ───
     if command -v init >/dev/null 2>&1; then
-        # Verify that 'init' responds (some minimal systems don't support runlevels)
         if init --help >/dev/null 2>&1 || [ -x /sbin/init ]; then
             RESTART_METHOD="init"
             RESTART_CMD_STOP="init 4"
@@ -78,7 +77,7 @@ detect_restart_method() {
     if command -v killall >/dev/null 2>&1; then
         RESTART_METHOD="killall"
         RESTART_CMD_STOP="killall -9 enigma2"
-        RESTART_CMD_START=""    # killall relies on init to auto-restart
+        RESTART_CMD_START=""
         ok "Restart method: killall -9"
         return 0
     fi
@@ -93,36 +92,25 @@ detect_restart_method() {
 #  Stop Enigma2 (using detected method)
 # =====================================================================
 stop_enigma2() {
-    # If not running, nothing to do
     if ! pidof enigma2 >/dev/null 2>&1; then
         info "Enigma2 is not running"
-        return 1   # Return 1 = was not running
+        return 1
     fi
 
     info "Stopping Enigma2 via ${RESTART_METHOD}..."
 
     case "${RESTART_METHOD}" in
-        systemd)
-            systemctl stop enigma2 2>/dev/null
-            ;;
-        init)
-            init 4 2>/dev/null
-            ;;
-        killall)
-            killall -9 enigma2 2>/dev/null
-            ;;
-        *)
-            # Fallback chain (only reached if detection failed)
-            init 4 2>/dev/null || killall -9 enigma2 2>/dev/null
-            ;;
+        systemd) systemctl stop enigma2 2>/dev/null ;;
+        init)    init 4 2>/dev/null ;;
+        killall) killall -9 enigma2 2>/dev/null ;;
+        *)       init 4 2>/dev/null || killall -9 enigma2 2>/dev/null ;;
     esac
 
-    # Wait up to 5 seconds for Enigma2 to actually stop
     WAIT=0
     while [ "${WAIT}" -lt 10 ]; do
         if ! pidof enigma2 >/dev/null 2>&1; then
             ok "Enigma2 stopped"
-            return 0   # Return 0 = was running, now stopped
+            return 0
         fi
         sleep 0.5
         WAIT=$((WAIT + 1))
@@ -139,23 +127,12 @@ start_enigma2() {
     info "Starting Enigma2 via ${RESTART_METHOD}..."
 
     case "${RESTART_METHOD}" in
-        systemd)
-            systemctl start enigma2 2>/dev/null
-            ;;
-        init)
-            init 3 2>/dev/null
-            ;;
-        killall)
-            # killall method relies on init to auto-restart
-            # If nothing auto-starts it, we try init 3
-            init 3 2>/dev/null || true
-            ;;
-        *)
-            init 3 2>/dev/null || true
-            ;;
+        systemd) systemctl start enigma2 2>/dev/null ;;
+        init)    init 3 2>/dev/null ;;
+        killall) init 3 2>/dev/null || true ;;
+        *)       init 3 2>/dev/null || true ;;
     esac
 
-    # Wait up to 10 seconds for Enigma2 to come back
     WAIT=0
     while [ "${WAIT}" -lt 20 ]; do
         if pidof enigma2 >/dev/null 2>&1; then
@@ -176,22 +153,55 @@ start_enigma2() {
 restart_enigma2() {
     info "Restarting Enigma2..."
 
-    # Stop
     WAS_RUNNING=0
     if stop_enigma2; then
         WAS_RUNNING=1
     fi
 
-    # Small delay between stop/start
     sleep 1
 
-    # Start
     if [ "${WAS_RUNNING}" = "1" ] || [ "${RESTART_METHOD}" = "init" ]; then
         start_enigma2
     else
-        # Enigma2 wasn't running and we're not on init → try to start it anyway
         start_enigma2
     fi
+}
+
+# =====================================================================
+#  Remove existing plugin directory from plugins path
+# =====================================================================
+remove_existing_plugin() {
+    if [ ! -d "${PLUGIN_DIR}" ]; then
+        info "No existing ${PLUGIN_NAME} installation found"
+        return 0
+    fi
+
+    info "Removing existing plugin: ${PLUGIN_DIR}"
+
+    # Ensure Enigma2 is stopped before removal
+    if pidof enigma2 >/dev/null 2>&1; then
+        warn "Enigma2 still running — stopping first"
+        stop_enigma2
+    fi
+
+    # Attempt removal
+    if rm -rf "${PLUGIN_DIR}" 2>/dev/null && [ ! -d "${PLUGIN_DIR}" ]; then
+        ok "Old plugin directory removed"
+        return 0
+    fi
+
+    # Fallback: force removal file-by-file
+    warn "Standard rm failed — trying force removal"
+    find "${PLUGIN_DIR}" -type f -exec rm -f {} \; 2>/dev/null
+    find "${PLUGIN_DIR}" -depth -type d -exec rmdir {} \; 2>/dev/null
+
+    if [ ! -d "${PLUGIN_DIR}" ]; then
+        ok "Old plugin directory removed (forced)"
+        return 0
+    fi
+
+    err "Cannot remove ${PLUGIN_DIR}"
+    return 1
 }
 
 # =====================================================================
@@ -373,13 +383,21 @@ if stop_enigma2; then
     ENIGMA_WAS_RUNNING=1
 fi
 
-# Remove old install
-if [ -d "${PLUGIN_DIR}" ]; then
-    rm -rf "${PLUGIN_DIR}" || {
-        err "Cannot remove old install"
-        [ "${ENIGMA_WAS_RUNNING}" = "1" ] && start_enigma2
-        exit 1
-    }
+# ─── Remove old plugin from plugins path ───
+if ! remove_existing_plugin; then
+    err "Failed to remove old installation — aborting"
+    if [ -n "${BACKUP_PATH}" ] && [ -d "${BACKUP_PATH}" ]; then
+        warn "Restoring from backup..."
+        cp -a "${BACKUP_PATH}" "${PLUGIN_DIR}" 2>/dev/null
+    fi
+    [ "${ENIGMA_WAS_RUNNING}" = "1" ] && start_enigma2
+    rm -rf "${TMP_DIR}" 2>/dev/null
+    exit 1
+fi
+
+# ─── Sanity check ───
+if [ -e "${PLUGIN_DIR}" ]; then
+    die "Target still exists after removal: ${PLUGIN_DIR}"
 fi
 
 mkdir -p "${PLUGIN_PARENT}" || die "mkdir parent failed"
@@ -440,7 +458,6 @@ if [ "${ENIGMA_WAS_RUNNING}" = "1" ]; then
     restart_enigma2
 else
     info "Enigma2 was not running before install"
-    # Try to start it
     start_enigma2 || warn "Start Enigma2 manually: ${RESTART_CMD_START}"
 fi
 
